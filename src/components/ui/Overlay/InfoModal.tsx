@@ -1,8 +1,10 @@
 import { useStore } from '../../../hooks/useStore';
 import styles from './InfoModal.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const InfoModal = () => {
     const { isModalOpen, modalContent, closeModal, selectedProject, selectedCompany } = useStore();
+    const navigate = useNavigate();
 
     if (!isModalOpen) return null;
 
@@ -55,6 +57,27 @@ const InfoModal = () => {
                                     </div>
                                 </div>
                             )}
+
+                            <button
+                                onClick={() => {
+                                    closeModal();
+                                    navigate(`/project/${selectedProject.id}/workhub`);
+                                }}
+                                style={{
+                                    marginTop: '20px',
+                                    width: '100%',
+                                    padding: '12px',
+                                    backgroundColor: '#3b82f6',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontWeight: 'bold',
+                                    fontSize: '1rem'
+                                }}
+                            >
+                                📋 프로젝트 내용보기 (WorkHub)
+                            </button>
                         </>
                     ) : (
                         <p>{modalContent}</p>
