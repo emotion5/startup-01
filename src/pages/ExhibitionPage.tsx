@@ -1,13 +1,29 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SceneEnv from '../components/canvas/SceneEnv';
 import ModernBuilding from '../components/canvas/Buildings/ModernBuilding';
 import InfoKiosk from '../components/canvas/Props/InfoKiosk';
 import InfoModal from '../components/ui/Overlay/InfoModal';
+import { startups } from '../data/startups';
+import { useStore } from '../hooks/useStore';
 
 const ExhibitionPage: React.FC = () => {
     const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    const { setSelectedStartup } = useStore();
+
+    const startup = startups.find(s => s.id === id);
+
+    useEffect(() => {
+        if (startup) {
+            setSelectedStartup(startup);
+        }
+    }, [startup, setSelectedStartup]);
+
+    if (!startup) {
+        return <div>Startup not found</div>;
+    }
 
     return (
         <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
@@ -34,7 +50,7 @@ const ExhibitionPage: React.FC = () => {
                 <Suspense fallback={null}>
                     <SceneEnv />
                     <ModernBuilding />
-                    <InfoKiosk position={[2, 0, 2]} />
+                    <InfoKiosk position={[2, 0, 2]} startup={startup} />
                 </Suspense>
             </Canvas>
 

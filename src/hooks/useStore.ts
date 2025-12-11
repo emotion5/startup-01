@@ -1,10 +1,16 @@
 import { create } from 'zustand';
 
-interface Startup {
+export interface Startup {
     id: string;
     name: string;
     description: string;
     modelType: string;
+    category: string;
+    color?: string;
+    foundedDate: string;
+    address: string;
+    website: string;
+    email: string;
 }
 
 interface AppState {

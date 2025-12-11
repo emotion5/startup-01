@@ -1,21 +1,31 @@
 import { useState } from 'react';
 import { Html } from '@react-three/drei';
-import { useStore } from '../../../hooks/useStore';
+import { useStore, type Startup } from '../../../hooks/useStore';
 
-const InfoKiosk = ({ position }: { position: [number, number, number] }) => {
+interface InfoKioskProps {
+    position: [number, number, number];
+    startup: Startup;
+}
+
+const InfoKiosk = ({ position, startup }: InfoKioskProps) => {
     const [hovered, setHovered] = useState(false);
-    const openModal = useStore((state) => state.openModal);
+    const { openModal, setSelectedStartup } = useStore();
+
+    const handleClick = () => {
+        setSelectedStartup(startup);
+        openModal(startup.description); // Fallback content, though InfoModal will use selectedStartup
+    };
 
     return (
         <group position={position}>
             <mesh
-                onClick={() => openModal('Welcome to our Startup! Here is some information about us.')}
+                onClick={handleClick}
                 onPointerOver={() => { document.body.style.cursor = 'pointer'; setHovered(true); }}
                 onPointerOut={() => { document.body.style.cursor = 'auto'; setHovered(false); }}
                 castShadow
             >
                 <boxGeometry args={[1, 2, 0.5]} />
-                <meshStandardMaterial color={hovered ? '#38bdf8' : '#0ea5e9'} />
+                <meshStandardMaterial color={hovered ? '#38bdf8' : (startup.color || '#0ea5e9')} />
             </mesh>
 
             {/* Floating Label */}
@@ -27,9 +37,10 @@ const InfoKiosk = ({ position }: { position: [number, number, number] }) => {
                     borderRadius: '4px',
                     fontSize: '12px',
                     whiteSpace: 'nowrap',
-                    opacity: hovered ? 1 : 0.7
+                    opacity: hovered ? 1 : 0.7,
+                    pointerEvents: 'none'
                 }}>
-                    Info Kiosk
+                    {startup.name}
                 </div>
             </Html>
         </group>
