@@ -2,7 +2,7 @@ import { useStore } from '../../../hooks/useStore';
 import styles from './InfoModal.module.css';
 
 const InfoModal = () => {
-    const { isModalOpen, modalContent, closeModal, selectedStartup } = useStore();
+    const { isModalOpen, modalContent, closeModal, selectedProject, selectedCompany } = useStore();
 
     if (!isModalOpen) return null;
 
@@ -13,38 +13,48 @@ const InfoModal = () => {
                     &times;
                 </button>
                 <div className={styles.content}>
-                    {selectedStartup ? (
+                    {selectedProject ? (
                         <>
-                            <h2 style={{ marginTop: 0, marginBottom: '10px', color: '#1e293b' }}>{selectedStartup.name}</h2>
-                            <span style={{
-                                display: 'inline-block',
-                                padding: '4px 8px',
-                                borderRadius: '4px',
-                                backgroundColor: '#e2e8f0',
-                                color: '#475569',
-                                fontSize: '0.8rem',
-                                marginBottom: '16px'
-                            }}>
-                                {selectedStartup.category || 'Startup'}
-                            </span>
-                            <p style={{ lineHeight: '1.6', color: '#334155', marginBottom: '20px' }}>
-                                {selectedStartup.description}
-                            </p>
-
-                            <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '16px', fontSize: '0.9rem', color: '#475569' }}>
-                                <div style={{ marginBottom: '8px' }}>
-                                    <strong>📅 설립일:</strong> {selectedStartup.foundedDate}
-                                </div>
-                                <div style={{ marginBottom: '8px' }}>
-                                    <strong>📍 주소:</strong> {selectedStartup.address}
-                                </div>
-                                <div style={{ marginBottom: '8px' }}>
-                                    <strong>🌐 웹사이트:</strong> <a href={selectedStartup.website} target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'none' }}>{selectedStartup.website}</a>
-                                </div>
-                                <div>
-                                    <strong>✉️ 이메일:</strong> <a href={`mailto:${selectedStartup.email}`} style={{ color: '#3b82f6', textDecoration: 'none' }}>{selectedStartup.email}</a>
+                            <div style={{ marginBottom: '16px' }}>
+                                <span style={{
+                                    display: 'inline-block',
+                                    padding: '4px 8px',
+                                    borderRadius: '4px',
+                                    backgroundColor: selectedProject.status === 'in-progress' ? '#dbeafe' : selectedProject.status === 'completed' ? '#dcfce7' : '#f3f4f6',
+                                    color: selectedProject.status === 'in-progress' ? '#1e40af' : selectedProject.status === 'completed' ? '#166534' : '#374151',
+                                    fontSize: '0.8rem',
+                                    fontWeight: 'bold',
+                                    marginBottom: '8px'
+                                }}>
+                                    {selectedProject.status === 'in-progress' ? 'In Progress' : selectedProject.status === 'completed' ? 'Completed' : 'Planning'}
+                                </span>
+                                <h2 style={{ marginTop: 0, marginBottom: '5px', color: '#1e293b' }}>{selectedProject.title}</h2>
+                                <div style={{ width: '100%', backgroundColor: '#e2e8f0', borderRadius: '9999px', height: '8px', marginBottom: '16px' }}>
+                                    <div style={{ backgroundColor: '#3b82f6', height: '8px', borderRadius: '9999px', width: `${selectedProject.progress}%` }}></div>
                                 </div>
                             </div>
+
+                            <p style={{ lineHeight: '1.6', color: '#334155', marginBottom: '20px' }}>
+                                {selectedProject.description}
+                            </p>
+
+                            {selectedCompany && (
+                                <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '16px', fontSize: '0.9rem', color: '#475569' }}>
+                                    <h4 style={{ margin: '0 0 10px 0', color: '#1e293b' }}>🏢 수행 기업: {selectedCompany.name}</h4>
+                                    <div style={{ marginBottom: '8px' }}>
+                                        <strong>📅 설립일:</strong> {selectedCompany.foundedDate}
+                                    </div>
+                                    <div style={{ marginBottom: '8px' }}>
+                                        <strong>📍 주소:</strong> {selectedCompany.address}
+                                    </div>
+                                    <div style={{ marginBottom: '8px' }}>
+                                        <strong>🌐 웹사이트:</strong> <a href={selectedCompany.website} target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'none' }}>{selectedCompany.website}</a>
+                                    </div>
+                                    <div>
+                                        <strong>✉️ 이메일:</strong> <a href={`mailto:${selectedCompany.email}`} style={{ color: '#3b82f6', textDecoration: 'none' }}>{selectedCompany.email}</a>
+                                    </div>
+                                </div>
+                            )}
                         </>
                     ) : (
                         <p>{modalContent}</p>

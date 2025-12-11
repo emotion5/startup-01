@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { Html } from '@react-three/drei';
-import { useStore, type Startup } from '../../../hooks/useStore';
+import { useStore } from '../../../hooks/useStore';
+import type { Project, Company } from '../../../data/mockData';
 
 interface InfoKioskProps {
     position: [number, number, number];
-    startup: Startup;
+    project: Project;
+    company: Company;
 }
 
-const InfoKiosk = ({ position, startup }: InfoKioskProps) => {
+const InfoKiosk = ({ position, project, company }: InfoKioskProps) => {
     const [hovered, setHovered] = useState(false);
-    const { openModal, setSelectedStartup } = useStore();
+    const { openModal, setSelectedProject, setSelectedCompany } = useStore();
 
     const handleClick = () => {
-        setSelectedStartup(startup);
-        openModal(startup.description); // Fallback content, though InfoModal will use selectedStartup
+        setSelectedProject(project);
+        setSelectedCompany(company);
+        openModal();
     };
 
     return (
@@ -25,7 +28,7 @@ const InfoKiosk = ({ position, startup }: InfoKioskProps) => {
                 castShadow
             >
                 <boxGeometry args={[1, 2, 0.5]} />
-                <meshStandardMaterial color={hovered ? '#38bdf8' : (startup.color || '#0ea5e9')} />
+                <meshStandardMaterial color={hovered ? '#38bdf8' : (project.color || '#0ea5e9')} />
             </mesh>
 
             {/* Floating Label */}
@@ -40,7 +43,7 @@ const InfoKiosk = ({ position, startup }: InfoKioskProps) => {
                     opacity: hovered ? 1 : 0.7,
                     pointerEvents: 'none'
                 }}>
-                    {startup.name}
+                    {project.title}
                 </div>
             </Html>
         </group>
@@ -48,3 +51,4 @@ const InfoKiosk = ({ position, startup }: InfoKioskProps) => {
 };
 
 export default InfoKiosk;
+

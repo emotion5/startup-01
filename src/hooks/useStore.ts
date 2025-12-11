@@ -1,32 +1,25 @@
 import { create } from 'zustand';
-
-export interface Startup {
-    id: string;
-    name: string;
-    description: string;
-    modelType: string;
-    category: string;
-    color?: string;
-    foundedDate: string;
-    address: string;
-    website: string;
-    email: string;
-}
+import type { Project, Company } from '../data/mockData';
 
 interface AppState {
-    selectedStartup: Startup | null;
+    selectedProject: Project | null;
+    selectedCompany: Company | null;
     isModalOpen: boolean;
     modalContent: string | null;
-    setSelectedStartup: (startup: Startup | null) => void;
-    openModal: (content: string) => void;
+    setSelectedProject: (project: Project | null) => void;
+    setSelectedCompany: (company: Company | null) => void;
+    openModal: (content?: string) => void; // content is optional now as we use selectedProject
     closeModal: () => void;
 }
 
 export const useStore = create<AppState>((set) => ({
-    selectedStartup: null,
+    selectedProject: null,
+    selectedCompany: null,
     isModalOpen: false,
     modalContent: null,
-    setSelectedStartup: (startup) => set({ selectedStartup: startup }),
-    openModal: (content) => set({ isModalOpen: true, modalContent: content }),
+    setSelectedProject: (project) => set({ selectedProject: project }),
+    setSelectedCompany: (company) => set({ selectedCompany: company }),
+    openModal: (content) => set({ isModalOpen: true, modalContent: content || null }),
     closeModal: () => set({ isModalOpen: false, modalContent: null }),
 }));
+

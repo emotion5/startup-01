@@ -13,15 +13,17 @@
 }
 
 .modal {
-    background-color: var(--color-bg-card);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
+    background-color: var(--color-bg-modal);
+    border: 1px solid var(--color-border-light);
+    border-radius: 16px;
     padding: var(--spacing-xl);
-    max-width: 500px;
+    max-width: 600px;
     width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
     position: relative;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    animation: fadeIn 0.2s ease-out;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {
@@ -40,17 +42,25 @@
     position: absolute;
     top: var(--spacing-md);
     right: var(--spacing-md);
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-lg);
-    padding: 4px;
+    color: var(--color-text-medium);
+    font-size: var(--font-size-xl);
+    padding: var(--spacing-xs);
     line-height: 1;
+    transition: var(--transition-fast);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
 }
 
 .closeButton:hover {
-    color: var(--color-text-primary);
+    color: var(--color-text-dark);
+    background-color: var(--color-border-light);
 }
 
 .content {
-    color: var(--color-text-primary);
+    color: var(--color-text-dark);
     line-height: 1.6;
 }

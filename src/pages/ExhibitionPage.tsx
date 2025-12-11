@@ -5,24 +5,26 @@ import SceneEnv from '../components/canvas/SceneEnv';
 import ModernBuilding from '../components/canvas/Buildings/ModernBuilding';
 import InfoKiosk from '../components/canvas/Props/InfoKiosk';
 import InfoModal from '../components/ui/Overlay/InfoModal';
-import { startups } from '../data/startups';
+import { projects, companies } from '../data/mockData';
 import { useStore } from '../hooks/useStore';
 
 const ExhibitionPage: React.FC = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
-    const { setSelectedStartup } = useStore();
+    const { setSelectedProject, setSelectedCompany } = useStore();
 
-    const startup = startups.find(s => s.id === id);
+    const project = projects.find(p => p.id === id);
+    const company = project ? companies.find(c => c.id === project.companyId) : undefined;
 
     useEffect(() => {
-        if (startup) {
-            setSelectedStartup(startup);
+        if (project && company) {
+            setSelectedProject(project);
+            setSelectedCompany(company);
         }
-    }, [startup, setSelectedStartup]);
+    }, [project, company, setSelectedProject, setSelectedCompany]);
 
-    if (!startup) {
-        return <div>Startup not found</div>;
+    if (!project || !company) {
+        return <div>Project not found</div>;
     }
 
     return (
@@ -42,7 +44,7 @@ const ExhibitionPage: React.FC = () => {
                     backdropFilter: 'blur(4px)'
                 }}
             >
-                &larr; Back to Dashboard
+                &larr; Back to Showroom
             </button>
 
             {/* 3D Canvas */}
@@ -50,7 +52,7 @@ const ExhibitionPage: React.FC = () => {
                 <Suspense fallback={null}>
                     <SceneEnv />
                     <ModernBuilding />
-                    <InfoKiosk position={[2, 0, 2]} startup={startup} />
+                    <InfoKiosk position={[2, 0, 2]} project={project} company={company} />
                 </Suspense>
             </Canvas>
 
